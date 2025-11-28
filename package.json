@@ -1,18 +1,37 @@
 {
-  "name": "carelink",
+  "name": "booklink",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "start": "expo start",
+    "backend": "node server.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~3.1.3",
+    "@react-navigation/native": "^7.1.22",
+    "@react-navigation/native-stack": "^7.8.1",
+    "axios": "^1.13.2",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
     "expo": "~54.0.23",
+    "expo-image-picker": "~17.0.8",
     "expo-status-bar": "~3.0.8",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.15.3",
     "react": "19.1.0",
-    "react-native": "0.81.5"
+    "react-dom": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0",
+    "react-native-web": "^0.21.0",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
 }
