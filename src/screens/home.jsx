@@ -1,3 +1,4 @@
+// src/screens/home.jsx
 import React, { useState, useRef } from "react";
 import {
   View,
@@ -12,13 +13,26 @@ import { Footer } from "../components/footer";
 import { Header } from "../components/header";
 import { FontAwesome } from "@expo/vector-icons";
 
-export default function Home({ navigation }) {
+const PRIMARY_BLACK = "#050308";
+const CARD_DARK = "#151021";
+const LILAC = "#A47DAB";
+const LILAC_STRONG = "#BF8CFF";
+
+export default function Home({ navigation, route }) {
+  const userLogado = route?.params?.user || null;
+  console.log("Home userLogado:", userLogado);
+
   const [livros, setLivros] = useState([
     {
       id: 1,
       titulo: "O Hobbit",
       autor: "J.R.R. Tolkien",
-      usuario: "Ana",
+      usuario: {
+        id: 1,
+        nome: "Ana",
+        email: "ana@exemplo.com",
+        descricao: "Leitora apaixonada por fantasia.",
+      },
       imagem: "https://imagens.disal.com.br/produtos/ampliada/5724465.jpg",
       spoiler: false,
       curtidas: 12,
@@ -29,7 +43,12 @@ export default function Home({ navigation }) {
       id: 2,
       titulo: "Game of Thrones",
       autor: "George R.R. Martin",
-      usuario: "Lucas",
+      usuario: {
+        id: 2,
+        nome: "Lucas",
+        email: "lucas@exemplo.com",
+        descricao: "Curte tramas políticas e fantasia adulta.",
+      },
       imagem:
         "https://cdn.kobo.com/book-images/fbd29721-fa99-4f12-86d0-23805cdb97b0/1200/1200/False/a-game-of-thrones.jpg",
       spoiler: true,
@@ -79,8 +98,14 @@ export default function Home({ navigation }) {
     );
   };
 
-  const handlePerfil = (usuario) => {
-    navigation.navigate("Perfil", { usuario });
+  // PERFIL DO USUÁRIO LOGADO
+  const handlePerfilLogado = () => {
+    if (!userLogado) {
+      console.log("Nenhum userLogado recebido na Home");
+      return;
+    }
+    console.log("Indo para Perfil com userLogado:", userLogado);
+    navigation.navigate("Perfil", { user: userLogado });
   };
 
   return (
@@ -92,6 +117,15 @@ export default function Home({ navigation }) {
         contentContainerStyle={styles.content}
         indicatorStyle="white"
       >
+        {/* Botão simples pra ir pro próprio perfil */}
+        <TouchableOpacity
+          style={styles.meuPerfilButton}
+          onPress={handlePerfilLogado}
+        >
+          <FontAwesome name="user" size={18} color="#FFFFFF" />
+          <Text style={styles.meuPerfilText}>Ver meu perfil</Text>
+        </TouchableOpacity>
+
         {livros.map((livro) => (
           <View key={livro.id} style={styles.card}>
             <View style={styles.cardTop}>
@@ -99,11 +133,8 @@ export default function Home({ navigation }) {
               <View style={{ flex: 1, marginLeft: 12 }}>
                 <Text style={styles.bookTitle}>{livro.titulo}</Text>
                 <Text style={styles.bookAuthor}>{livro.autor}</Text>
-                <Text
-                  style={styles.postedBy}
-                  onPress={() => handlePerfil(livro.usuario)}
-                >
-                  Postado por {livro.usuario}
+                <Text style={styles.postedBy}>
+                  Postado por {livro.usuario.nome}
                 </Text>
                 {livro.spoiler && (
                   <Text style={styles.spoiler}>⚠️ Contém spoiler</Text>
@@ -127,13 +158,8 @@ export default function Home({ navigation }) {
                 <FontAwesome name="comment" size={24} color="#fff" />
                 <Text style={styles.counter}>{livro.comentarios.length}</Text>
               </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => handlePerfil(livro.usuario)}>
-                <FontAwesome name="user" size={24} color="#fff" />
-              </TouchableOpacity>
             </View>
 
-            {/* Comentários */}
             {livro.comentarios.map((c, i) => (
               <Text key={i} style={styles.comment}>
                 {c}
@@ -143,15 +169,11 @@ export default function Home({ navigation }) {
         ))}
       </ScrollView>
 
+      {/* Footer sem passar user por enquanto */}
       <Footer navigation={navigation} />
     </View>
   );
 }
-
-const PRIMARY_BLACK = "#050308";
-const CARD_DARK = "#151021";
-const LILAC = "#A47DAB";
-const LILAC_STRONG = "#BF8CFF";
 
 const styles = StyleSheet.create({
   screen: {
@@ -164,6 +186,24 @@ const styles = StyleSheet.create({
   content: {
     padding: 16,
     paddingBottom: 80,
+  },
+  meuPerfilButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-end",
+    marginBottom: 12,
+    backgroundColor: CARD_DARK,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: LILAC,
+  },
+  meuPerfilText: {
+    color: "#FFFFFF",
+    marginLeft: 6,
+    fontSize: 12,
+    fontWeight: "600",
   },
   card: {
     backgroundColor: CARD_DARK,

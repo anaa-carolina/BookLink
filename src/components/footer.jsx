@@ -1,19 +1,22 @@
+// src/components/footer.js
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const PRIMARY_BLACK = "#050308";
 const LILAC = "#A47DAB";
 
-export function Footer({ navigation }) {
+export function Footer({ navigation, user }) {
   return (
     <View style={styles.footer}>
-      <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Home", { user })}>
         <Text style={styles.footerItem}>Home</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("AddLivro")}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("AddLivro", { user })}
+      >
         <Text style={styles.footerItem}>Adicionar</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Perfil")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Perfil", { user })}>
         <Text style={styles.footerItem}>Perfil</Text>
       </TouchableOpacity>
     </View>

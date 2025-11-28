@@ -102,7 +102,6 @@ export default function AddLivro({ navigation }) {
         </View>
       </ScrollView>
 
-      {/* FOOTER fixo */}
       <Footer navigation={navigation} />
     </View>
   );

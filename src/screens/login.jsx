@@ -9,23 +9,35 @@ import {
   Image,
 } from "react-native";
 
+const PRIMARY_BLACK = "#050308";
+const LILAC = "#A47DAB";
+const DARK_INPUT = "#1A1625";
+
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://10.0.2.2:3000/api/usuarios/login", {
+      const response = await fetch("http://localhost:3000/api/usuarios/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
       });
 
-      const data = await response.json();
+      let data = {};
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
 
       if (response.ok) {
+        // data deve ser o usuário { id, nome, email, descricao, ... }
+        console.log("Usuário logado:", data);
+        navigation.replace("Home", { user: data });
       } else {
-        Alert.alert("Erro", data.error || "Falha no login");
+        Alert.alert("Erro", data.error || "Email ou senha inválidos");
       }
     } catch (error) {
       Alert.alert("Erro", "Não foi possível conectar ao servidor");
@@ -81,10 +93,6 @@ export default function Login({ navigation }) {
     </View>
   );
 }
-
-const PRIMARY_BLACK = "#050308";
-const LILAC = "#A47DAB";
-const DARK_INPUT = "#1A1625";
 
 const styles = StyleSheet.create({
   container: {
